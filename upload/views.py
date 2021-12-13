@@ -1,13 +1,14 @@
 from django.shortcuts import render
 from django.views.generic import ListView, TemplateView 
 
-from django.http import HttpResponse
-from django.template import loader
-from django.
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+from django.contrib import messages
+import logging
+import csv
 
 from .models import Upload
 from .forms import UploadFileForm
-import csv
 
 
 class HomeView(ListView):
@@ -54,7 +55,7 @@ def upload_csv(request):
         logging.getLogger("error_logger").error("Unable to upload file. "+repr(e))
         messages.error(request,"Unable to upload CVS file. "+repr(e))
 
-    return HttpResponseRedirect(reverse("myapp:upload_csv"))
+    return HttpResponseRedirect(reverse("upload:upload_csv"))
 
 # def chart_data(request):
 #     data = []
