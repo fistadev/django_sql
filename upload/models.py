@@ -16,6 +16,17 @@ class Upload(models.Model):
 
 
 
+    # title = models.CharField(max_length=50)
+    # author = models.CharField(max_length=50)
+    # num_rating = models.IntegerField()
+    # num_reviews = models.IntegerField()
+    # avg_rating,num_pages = models.FloatField(),models.IntegerField()
+    # original_publish_year = models.IntegerField()
+    # series = models.CharField(max_length=50)
+    # minmax_norm_ratings = models.FloatField(),models.FloatField()
+    # mean_norm_ratings = models.FloatField()
+    # genres = models.CharField(max_length=50)
+    # award = models.CharField(max_length=50)
 
 
 # Django request/response cycle
