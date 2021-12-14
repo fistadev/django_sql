@@ -4,7 +4,7 @@
 {% block content %}
 
 
-<h1 class="display-6 text-center py-4">Data</h1>
+<h1 class="display-6 text-center py-4">Upload Data</h1>
 
 {% if messages %}
 {% for message in messages %}
@@ -17,10 +17,10 @@
 {{order}}
 <form action="" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
-    <label for="file1"> Upload a file</label>
-    <input type="file" id="file1" name="file">
-    <small>Only accepts CSV files</small>
-    <button type="submit">Upload</button>
+    <label for="file1" class="form-label"> Upload a file</label>
+    <input class="form-control form-control-sm" type="file" id="file1" name="file">
+    <button class="btn btn-outline-dark mt-3" type="submit">Upload</button>
+    <p class="pt-3"><small>* Only accepts CSV files</small></p>
 </form>
 {% endif %}
 {% for profile in profiles %}
