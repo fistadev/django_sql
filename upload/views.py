@@ -7,55 +7,84 @@ from django.contrib import messages
 import logging
 import csv
 
-from .models import Upload
+from django.shortcuts import render
+from .models import *
 from .forms import UploadFileForm
+
+import pandas as pd
 
 
 class HomeView(ListView):
-    model = Upload
+    model = Books
     template_name = 'upload/index.html'
+    context_object_name = 'home_list'
 
 
-def upload_csv(request):
-    data = {}
-    if "GET" == request.method:
-        return render(request, "upload/index.html", data)
-# if not GET, then proceed with processing
-    try:
-        csv_file = request.FILES["csv_file"]
-        if not csv_file.name.endswith('.csv'):
-            messages.error(request,'File is not CSV type')
-            return HttpResponseRedirect(reverse("upload:upload_csv"))
-        #if file is too large, return message
-        if csv_file.multiple_chunks():
-            messages.error(request,"Uploaded file is too big (%.2f MB)." % (csv_file.size/(1000*1000),))
-            return HttpResponseRedirect(reverse("upload:upload_csv"))
-        file_data = csv_file.read().decode("utf-8")          
+# def home(request):
+#     if request.method == 'POST':
+#         form = UploadFileForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             form.save()
+#             return HttpResponseRedirect(reverse('upload-home'))
+#     else:
+#         form = UploadFileForm()
+#     return render(request, 'upload/index.html', {'form': form})
 
-        lines = file_data.split("\n")
-        #loop over the lines and save them in db. If error shows up , store as string and then display
-        for line in lines:                                          
-            fields = line.split(",")
-            data_dict = {}
-            data_dict["name"] = fields[0]
-            data_dict["start_date_time"] = fields[1]
-            data_dict["end_date_time"] = fields[2]
-            data_dict["notes"] = fields[3]
-            try:
-                form = UploadFileForm(data_dict)
-                if form.is_valid():
-                    form.save()                                  
-                else:
-                    logging.getLogger("error_logger").error(form.errors.as_json())                                                                                    
-            except Exception as e:
-                logging.getLogger("error_logger").error(repr(e))                             
-        pass
 
-    except Exception as e:
-        logging.getLogger("error_logger").error("Unable to upload file. "+repr(e))
-        messages.error(request,"Unable to upload CVS file. "+repr(e))
+def results(request):
+    item = Books.objects.all().values()
+    df = pd.DataFrame(item)
+    mydict = {
+        "df": df.to_html()
+    }
+    return render(request, 'upload/results.html', context=mydict)
 
-    return HttpResponseRedirect(reverse("upload:upload_csv"))
+
+# class HomeView(ListView):
+#     model = Books
+#     template_name = 'upload/index.html'
+
+
+# def upload_csv(request):
+#     data = {}
+#     if "GET" == request.method:
+#         return render(request, "upload/index.html", data)
+# # if not GET, then proceed with processing
+#     try:
+#         csv_file = request.FILES["csv_file"]
+#         if not csv_file.name.endswith('.csv'):
+#             messages.error(request,'File is not CSV type')
+#             return HttpResponseRedirect(reverse("upload:upload_csv"))
+#         #if file is too large, return message
+#         if csv_file.multiple_chunks():
+#             messages.error(request,"Uploaded file is too big (%.2f MB)." % (csv_file.size/(1000*1000),))
+#             return HttpResponseRedirect(reverse("upload:upload_csv"))
+#         file_data = csv_file.read().decode("utf-8")          
+
+#         lines = file_data.split("\n")
+#         #loop over the lines and save them in db. If error shows up , store as string and then display
+#         for line in lines:                                          
+#             fields = line.split(",")
+#             data_dict = {}
+#             data_dict["name"] = fields[0]
+#             data_dict["start_date_time"] = fields[1]
+#             data_dict["end_date_time"] = fields[2]
+#             data_dict["notes"] = fields[3]
+#             try:
+#                 form = UploadFileForm(data_dict)
+#                 if form.is_valid():
+#                     form.save()                                  
+#                 else:
+#                     logging.getLogger("error_logger").error(form.errors.as_json())                                                                                    
+#             except Exception as e:
+#                 logging.getLogger("error_logger").error(repr(e))                             
+#         pass
+
+#     except Exception as e:
+#         logging.getLogger("error_logger").error("Unable to upload file. "+repr(e))
+#         messages.error(request,"Unable to upload CVS file. "+repr(e))
+
+#     return HttpResponseRedirect(reverse("upload:upload_csv"))
 
 # def chart_data(request):
 #     data = []
