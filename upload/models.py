@@ -3,13 +3,21 @@ from django.db import models
 from django.urls import reverse
 
 
+class Books(models.Model):
+    title = models.CharField(max_length=200)
+    author = models.CharField(max_length=200)
+    genres = models.TextField(max_length=500)
+
+    # def __str__(self):
+    #     return self.title
+
 
 class Upload(models.Model):
     file = models.FileField(upload_to='csv/')
     upload_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.file.name
+        return self.file
 
     def get_absolute_url(self):
         return reverse('upload-detail', args=[str(self.id)])
