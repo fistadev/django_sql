@@ -4,9 +4,9 @@ from django.urls import reverse
 
 
 class Books(models.Model):
-    title = models.CharField(max_length=200)
-    author = models.CharField(max_length=200)
-    genres = models.TextField(max_length=500)
+    title = models.CharField(("title"), max_length=200)
+    author = models.CharField(("author"), max_length=200)
+    genres = models.TextField(("genres"), max_length=500)
 
     # def __str__(self):
     #     return self.title
