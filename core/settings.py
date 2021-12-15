@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 
     # apps
     'upload',
+    'data',
 ]
 
 MIDDLEWARE = [

@@ -19,6 +19,14 @@
     {% csrf_token %}
     <label for="file1" class="form-label"> Upload a file</label>
     <input class="form-control form-control-sm" type="file" id="file1" name="file">
+
+    <select class="form-select" aria-label="Default select example">
+        <option selected>Choose one option</option>
+        <option value="1">Building Data</option>
+        <option value="2">Meter Data</option>
+        <option value="3">Half Hourly Data</option>
+    </select>
+
     <button class="btn btn-outline-dark mt-3" type="submit">Upload</button>
     <p class="pt-3"><small>* Only accepts CSV files</small></p>
 </form>
