@@ -24,13 +24,15 @@ class BooksComplete(models.Model):
     award = models.CharField(max_length=50)
 
 
+
     def __str__(self):
         return self.title
 
 
-# class Upload(models.Model):
+# class Customers(models.Model):
 #     file = models.FileField(upload_to='csv/')
 #     upload_date = models.DateTimeField(auto_now_add=True)
+#     title = models.ForeignKey(BooksComplete, on_delete=models.CASCADE)
 
 #     def __str__(self):
 #         return self.file
