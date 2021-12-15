@@ -19,16 +19,16 @@ from django.contrib import messages
 
 
 
-# class HomeView(ListView):
-#     model = Books
-#     template_name = 'upload/index.html'
-#     context_object_name = 'home_list'
+class HomeView(ListView):
+    # model = Books
+    template_name = 'upload/index.html'
+    context_object_name = 'home_list'
 
 
 # one parameter named request
 def book_upload(request):
     # declaring template
-    template = "upload/graphs.html"
+    template = "upload/index.html"
     data = BooksComplete.objects.all()
 # prompt is a context variable that can have different values      depending on their context
     prompt = {
