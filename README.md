@@ -26,18 +26,18 @@ pip install -r requirements.txt
 ```
 
 Start running local (localhost:8000)
-```bash
+```python
 python manage.py runserver
 ```
 
 Migrations (everytime that changes models.py)
-```bash
+```python
 python manage.py makemigrations
 
 python manage.py migrate
 ```
 
 Create superuser => add username and password
-```bash
+```python
 python manage.py createsuperuser 
 ```
