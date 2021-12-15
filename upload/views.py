@@ -12,6 +12,8 @@ from .models import *
 
 import pandas as pd
 import plotly.express as px
+from plotly.offline import plot
+import plotly.graph_objects as go
 import csv, io
 from django.contrib import messages
 
@@ -26,11 +28,11 @@ from django.contrib import messages
 # one parameter named request
 def book_upload(request):
     # declaring template
-    template = "upload/upload.html"
-    data = Books.objects.all()
+    template = "upload/graphs.html"
+    data = BooksComplete.objects.all()
 # prompt is a context variable that can have different values      depending on their context
     prompt = {
-        'order': 'Order of the CSV should be title, author, genres',
+        'order': 'Order of the CSV should be title, author, num_rating, num_reviews, avg_rating, num_pages, original_publish_year, award',
         'profiles': data    
               }
     # GET request returns the value of the data with the specified key.
@@ -45,10 +47,15 @@ def book_upload(request):
     io_string = io.StringIO(data_set)
     next(io_string)
     for column in csv.reader(io_string, delimiter=',', quotechar="|"):
-        _, created = Books.objects.update_or_create(
+        _, created = BooksComplete.objects.update_or_create(
             title=column[0],
             author=column[1],
-            genres=column[2],
+            num_rating=column[2],
+            num_reviews=column[3],
+            avg_rating=column[4],
+            num_pages=column[5],
+            original_publish_year=column[6],
+            award=column[7],
         )
     context = {}
     return render(request, template, context)
@@ -69,7 +76,7 @@ def book_upload(request):
 
 
 def results(request):
-    item = Books.objects.all().values()
+    item = BooksComplete.objects.all().values()
     # upload = Upload.objects.all().values()
     df = pd.DataFrame(item)
     mydict = {
@@ -77,8 +84,9 @@ def results(request):
     }
     # df = pd.read_csv(upload)
 
-    # fig = px.line(df, x = 'AAPL_x', y = 'AAPL_y', title='Apple Share Prices over time (2014)')
-    # fig.show()
+    fig = px.line(df, x = 'original_publish_year', y = 'title', title='Books by Year')
+    fig.show()
+
     return render(request, 'upload/results.html', context=mydict)
 
 
@@ -141,3 +149,53 @@ def results(request):
 
 #     return render(request, 'template.html',
 #                   {'data': data})
+
+
+def plot_view(request):
+    """ 
+    View demonstrating how to display a graph object
+    on a web page with Plotly. 
+    """
+    
+    # Generating some data for plots.
+    x = [i for i in range(-10, 11)]
+    y1 = [3*i for i in x]
+    y2 = [i**2 for i in x]
+    y3 = [10*abs(i) for i in x]
+
+    # List of graph objects for figure.
+    # Each object will contain on series of data.
+    graphs = []
+
+    # Adding linear plot of y1 vs. x.
+    graphs.append(
+        go.Scatter(x=x, y=y1, mode='lines', name='Line y1')
+    )
+
+    # Adding scatter plot of y2 vs. x. 
+    # Size of markers defined by y2 value.
+    graphs.append(
+        go.Scatter(x=x, y=y2, mode='markers', opacity=0.8, 
+                   marker_size=y2, name='Scatter y2')
+    )
+
+    # Adding bar plot of y3 vs x.
+    graphs.append(
+        go.Bar(x=x, y=y3, name='Bar y3')
+    )
+
+    # Setting layout of the figure.
+    layout = {
+        'title': 'Title of the figure',
+        'xaxis_title': 'X',
+        'yaxis_title': 'Y',
+        'height': 420,
+        'width': 560,
+    }
+
+    # Getting HTML needed to render the plot.
+    plot_div = plot({'data': graphs, 'layout': layout}, 
+                    output_type='div')
+
+    return render(request, 'upload/graphs.html', 
+                  context={'plot_div': plot_div})
