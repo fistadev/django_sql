@@ -11,7 +11,7 @@ class BuildingData(models.Model):
 
 
 class MeterData(models.Model):
-    building_id = models.ForeignKey(BuildingData, on_delete=models.CASCADE)
+    building_id = models.ForeignKey(BuildingData, on_delete=models.CASCADE, unique=False)
     id = models.IntegerField(primary_key=True)
     fuel = models.CharField(max_length=50)
     unit = models.CharField(max_length=50)

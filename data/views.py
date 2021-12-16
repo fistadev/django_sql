@@ -29,11 +29,13 @@ from django.contrib import messages
 def data_upload(request):
     # declaring template
     template = "data/index.html"
-    data = BuildingData.objects.all()
+    data_1 = BuildingData.objects.all()
+    data_2 = MeterData.objects.all()
+    data_3 = HalfHourlyData.objects.all()
 # prompt is a context variable that can have different values      depending on their context
     prompt = {
         # 'order': 'Order of the CSV should be id, name',
-        'profiles': data    
+        'profiles': data_1    
               }
     # GET request returns the value of the data with the specified key.
     if request.method == "GET":
@@ -46,25 +48,33 @@ def data_upload(request):
     # setup a stream which is when we loop through each line we are able to handle a data in a stream
     io_string = io.StringIO(data_set)
     next(io_string)
-    for column in csv.reader(io_string, delimiter=',', quotechar="|"):
-        _, created = BuildingData.objects.update_or_create(
-            id=column[0],
-            name=column[1],
-        )
-    # for column in csv.reader(io_string, delimiter=',', quotechar="|"):
-    #     _, created = MeterData.objects.update_or_create(
-    #         building_id=column[0],
-    #         id=column[1],
-    #         fuel=column[2],
-    #         unit=column[3],
-    #     )
-    # for column in csv.reader(io_string, delimiter=',', quotechar="|"):
-    #     _, created = HalfHourlyData.objects.update_or_create(
-    #         consumption=column[0],
-    #         meter_id=column[1],
-    #         reading_date_time=column[2],
-    #     )
-    context = {}
+    if data_1:
+        for column in csv.reader(io_string, delimiter=',', quotechar="|"):
+            _, created = BuildingData.objects.update_or_create(
+                id = column[0],
+                name = column[1]
+            )
+    elif data_2:
+        for column in csv.reader(io_string, delimiter=',', quotechar="|"):
+            _, created = MeterData.objects.update_or_create(
+                building_id=column[0],
+                id=column[1],
+                fuel=column[2],
+                unit=column[3],
+            )
+    else:
+        for column in csv.reader(io_string, delimiter=',', quotechar="|"):
+            _, created = HalfHourlyData.objects.update_or_create(
+                consumption=column[0],
+                meter_id=column[1],
+                reading_date_time=column[2],
+            )
+   
+    context = {
+        'data_1': data_1,
+        'data_2': data_2,
+        'data_3': data_3,
+    }
     return render(request, template, context)
 
 
@@ -91,10 +101,10 @@ def results(request):
     }
     # df = pd.read_csv(upload)
 
-    fig = px.line(df, x = 'original_publish_year', y = 'title', title='Books by Year')
+    fig = px.line(df, x = 'id', y = 'name', title='Building Data')
     fig.show()
 
-    return render(request, 'upload/results.html', context=mydict)
+    return render(request, 'data/results.html', context=mydict)
 
 
 
