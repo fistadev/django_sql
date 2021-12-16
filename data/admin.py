@@ -3,6 +3,8 @@ from .models import *
 
 class BuildingDataAdmin(admin.ModelAdmin):
     model = BuildingData
+    list_display = ('id', 'name')
+    list_filter = ('name', )
 
 
 class MeterDataAdmin(admin.ModelAdmin):

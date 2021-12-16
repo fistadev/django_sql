@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     # Local Apps
-    path('', include('upload.urls')),
+    path('', include('data.urls')),
+    # path('', include('upload.urls')),
     ] 
 # + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

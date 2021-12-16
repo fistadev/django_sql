@@ -19,20 +19,20 @@ from django.contrib import messages
 
 
 
-class HomeView(ListView):
-    # model = Books
-    template_name = 'data/index.html'
-    context_object_name = 'home_list'
+# class HomeView(ListView):
+#     # model = Books
+#     template_name = 'data/index.html'
+#     context_object_name = 'home_list'
 
 
 # one parameter named request
-def book_upload(request):
+def data_upload(request):
     # declaring template
     template = "data/index.html"
     data = BuildingData.objects.all()
 # prompt is a context variable that can have different values      depending on their context
     prompt = {
-        # 'order': 'Order of the CSV should be title, author, num_rating, num_reviews, avg_rating, num_pages, original_publish_year, award',
+        # 'order': 'Order of the CSV should be id, name',
         'profiles': data    
               }
     # GET request returns the value of the data with the specified key.
@@ -51,19 +51,19 @@ def book_upload(request):
             id=column[0],
             name=column[1],
         )
-    for column in csv.reader(io_string, delimiter=',', quotechar="|"):
-        _, created = MeterData.objects.update_or_create(
-            building_id=column[0],
-            id=column[1],
-            fuel=column[2],
-            unit=column[3],
-        )
-    for column in csv.reader(io_string, delimiter=',', quotechar="|"):
-        _, created = HalfHourlyData.objects.update_or_create(
-            consumption=column[0],
-            meter_id=column[1],
-            reading_date_time=column[2],
-        )
+    # for column in csv.reader(io_string, delimiter=',', quotechar="|"):
+    #     _, created = MeterData.objects.update_or_create(
+    #         building_id=column[0],
+    #         id=column[1],
+    #         fuel=column[2],
+    #         unit=column[3],
+    #     )
+    # for column in csv.reader(io_string, delimiter=',', quotechar="|"):
+    #     _, created = HalfHourlyData.objects.update_or_create(
+    #         consumption=column[0],
+    #         meter_id=column[1],
+    #         reading_date_time=column[2],
+    #     )
     context = {}
     return render(request, template, context)
 
