@@ -21,18 +21,18 @@ from django.contrib import messages
 
 class HomeView(ListView):
     # model = Books
-    template_name = 'upload/upload.html'
+    template_name = 'data/index.html'
     context_object_name = 'home_list'
 
 
 # one parameter named request
 def book_upload(request):
     # declaring template
-    template = "upload/upload.html"
+    template = "data/index.html"
     data = BuildingData.objects.all()
 # prompt is a context variable that can have different values      depending on their context
     prompt = {
-        'order': 'Order of the CSV should be title, author, num_rating, num_reviews, avg_rating, num_pages, original_publish_year, award',
+        # 'order': 'Order of the CSV should be title, author, num_rating, num_reviews, avg_rating, num_pages, original_publish_year, award',
         'profiles': data    
               }
     # GET request returns the value of the data with the specified key.
