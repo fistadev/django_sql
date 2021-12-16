@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+
+<h1 class="display-6 text-center py-4">Data</h1>
+
+<div class="row d-flex justify-content-center">
+    <div class="col d-flex justify-content-center px-5">
+
+        <div class="text-center">
+            <p class="py-3">
+                <a class="btn btn-outline-dark" data-toggle="collapse" href="#collapseExample" role="button"
+                    aria-expanded="false" aria-controls="collapseExample">
+                    View data
+                </a>
+            </p>
+            <div class="collapse" id="collapseExample">
+                <div class="card card-body">
+                    {{df|safe}}
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+{% endblock %}
