@@ -5,12 +5,14 @@ class BuildingDataAdmin(admin.ModelAdmin):
     model = BuildingData
 
 
-# class MeterDataAdmin(admin.ModelAdmin):
-#     model = MeterData
+class MeterDataAdmin(admin.ModelAdmin):
+    model = MeterData
 
 
-# class HalfHourlyDataAdmin(admin.ModelAdmin):
-#     model = HalfHourlyData
+class HalfHourlyDataAdmin(admin.ModelAdmin):
+    model = HalfHourlyData
 
 admin.site.register(BuildingData, BuildingDataAdmin)
+admin.site.register(MeterData, MeterDataAdmin)
+admin.site.register(HalfHourlyData, HalfHourlyDataAdmin)
 # admin.site.register(BuildingDataAdmin, MeterDataAdmin, HalfHourlyDataAdmin)
