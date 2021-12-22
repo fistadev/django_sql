@@ -20,7 +20,7 @@ from django.contrib import messages
 
 
 # class HomeView(ListView):
-#     # model = Books
+#     model = BuildingData
 #     template_name = 'data/index.html'
 #     context_object_name = 'home_list'
 
