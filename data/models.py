@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 
 class BuildingData(models.Model):
-    id = models.CharField(max_length=50, primary_key=True)
+    id = models.CharField(max_length=50, primary_key=True, unique=False)
     name = models.CharField(max_length=50)
 
     def __str__(self):
@@ -22,5 +22,5 @@ class MeterData(models.Model):
 
 class HalfHourlyData(models.Model):
     consumption = models.FloatField()
-    meter_id = models.ForeignKey(MeterData, on_delete=models.CASCADE)
+    meter_id = models.ForeignKey(MeterData, on_delete=models.CASCADE, unique=False)
     reading_date_time = models.DateTimeField()
